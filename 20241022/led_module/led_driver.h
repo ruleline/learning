@@ -21,7 +21,7 @@ struct RGBCW {
 
 //声明一个LED驱动抽象接口结构体
 struct LED_DRIVER {
-        unsigned int led_count;    //硬件对应的LED总数
+        unsigned int count;    //硬件对应的LED总数
 
         int (*init)(void *self);
         int (*turn_on)(void *self, enum LED_ID id);

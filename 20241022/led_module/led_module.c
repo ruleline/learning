@@ -2,17 +2,17 @@
 
 #include <string.h>
 
-static struct LED_MODULE led_module = {
-        .led_count = 0,
-        .led_drv = 0,
+static struct LED_MODULE module = {
+        .count = 0,
+        .drv = 0,
 };
 
 static int init_(struct LED_MODULE *self)
 {
         if (!self) return -1;
 
-        if (led_module.led_drv) {
-                led_module.led_drv->init(led_module.led_drv);
+        if (module.drv) {
+                module.drv->init(module.drv);
         }
         return 0;
 }
@@ -40,10 +40,10 @@ static int handler_(struct LED_MODULE *self)
         //在这里完善led模块的状态机（TODO）
 
         //每隔1秒，翻转指定的LED（演示作用）
-        self->led_drv->toggle(self->led_drv, LED_ID_1);
-        self->led_drv->toggle(self->led_drv, LED_ID_2);
-        self->led_drv->toggle(self->led_drv, LED_ID_3);
-        self->led_drv->toggle(self->led_drv, LED_ID_4);
+        self->drv->toggle(self->drv, LED_ID_1);
+        self->drv->toggle(self->drv, LED_ID_2);
+        self->drv->toggle(self->drv, LED_ID_3);
+        self->drv->toggle(self->drv, LED_ID_4);
         return 0;
 }
 
@@ -52,8 +52,8 @@ static int get_led_count_(struct LED_MODULE *self)
 {
         if (!self) return -1;
 
-        self->led_count = self->led_drv->led_count;
-        return self->led_count;
+        self->count = self->drv->count;
+        return self->count;
 }
 
 /**
@@ -67,20 +67,20 @@ struct LED_MODULE *led_module_create(struct LED_MODULE *self, struct LED_MODULE_
 {
         if (!cfg) return 0;
 
-        led_module.init = init_;
-        led_module.start = start_;
-        led_module.handler = handler_;
-        led_module.get_led_count = get_led_count_;
+        module.init = init_;
+        module.start = start_;
+        module.handler = handler_;
+        module.get_count = get_led_count_;
 
         //使用简单工厂模式，初始化led驱动
         if (strcmp("PIN", cfg->drv_name) == 0) {
-                led_module.led_drv = (struct LED_DRIVER*)led_drv_pin_create();
+                module.drv = (struct LED_DRIVER*)led_drv_pin_create();
         } else if (strcmp("PWM", cfg->drv_name) == 0) {
-                led_module.led_drv = (struct LED_DRIVER*)led_drv_pwm_create();
+                module.drv = (struct LED_DRIVER*)led_drv_pwm_create();
         } else if(strcmp("WS2812B", cfg->drv_name) == 0) {
-                led_module.led_drv = (struct LED_DRIVER*)led_drv_ws2812b_create();
+                module.drv = (struct LED_DRIVER*)led_drv_ws2812b_create();
         } else {
-                led_module.led_drv = 0;
+                module.drv = 0;
         }
-        return (&led_module);
+        return (&module);
 }

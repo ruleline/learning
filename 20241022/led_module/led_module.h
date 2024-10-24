@@ -16,15 +16,15 @@ enum LED_STATE {
 
 struct LED_MODULE {
         //私有成员
-        struct LED_DRIVER *led_drv;    //LED驱动句柄
+        struct LED_DRIVER *drv;    //LED驱动句柄
 
         //对外公有成员
-        unsigned char led_count;      //led灯珠数量
+        unsigned char count;      //led灯珠数量
 
         int (*init)(struct LED_MODULE *self);
         int (*start)(struct LED_MODULE *self);
         int (*handler)(struct LED_MODULE *self);
-        int (*get_led_count)(struct LED_MODULE *self);
+        int (*get_count)(struct LED_MODULE *self);
 };
 
 struct LED_MODULE_CFG {

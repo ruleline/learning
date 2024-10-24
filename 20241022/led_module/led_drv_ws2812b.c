@@ -1,7 +1,7 @@
 #include "led_drv_ws2812b.h"
 #include "stm32f10x.h"
 
-static struct LED_DRV_WS2812B led_drv_ws2812b;
+static struct LED_DRV_WS2812B ws2812b;
 
 #define DATA_PIN_HIGH()    GPIO_SetBits(GPIOA, GPIO_PIN_13)
 #define DATA_PIN_LOW()     GPIO_ResetBits(GPIOA, GPIO_PIN_13)
@@ -55,9 +55,9 @@ static void ws2812b_set_data(struct LED_DRV_WS2812B *ws2812b)
 {
         unsigned char color_buff[3];
         unsigned char brightness = 0;
-        unsigned int led_count = ws2812b->drv.led_count;    //灯珠总数
+        unsigned int count = ws2812b->drv.count;    //灯珠总数
 
-        if (led_count == 0) return;
+        if (count == 0) return;
 
         __disable_irq();
         ws2812b_reset();
@@ -166,13 +166,13 @@ static int toggle_(void *self, enum LED_ID id)
 
 struct LED_DRV_WS2812B *led_drv_ws2812b_create(void)
 {
-        led_drv_ws2812b.drv.init = init_;
-        led_drv_ws2812b.drv.turn_on = turn_on_;
-        led_drv_ws2812b.drv.turn_off = turn_off_;
-        led_drv_ws2812b.drv.toggle = toggle_;
-        led_drv_ws2812b.drv.set_brightness = set_brightness_;
-        led_drv_ws2812b.drv.set_color = set_color_;
-        led_drv_ws2812b.flush_data = ws2812b_set_data;
-        led_drv_ws2812b.drv.led_count = LED_MAX_NUM;
-        return (&led_drv_ws2812b);
+        ws2812b.drv.init = init_;
+        ws2812b.drv.turn_on = turn_on_;
+        ws2812b.drv.turn_off = turn_off_;
+        ws2812b.drv.toggle = toggle_;
+        ws2812b.drv.set_brightness = set_brightness_;
+        ws2812b.drv.set_color = set_color_;
+        ws2812b.flush_data = ws2812b_set_data;
+        ws2812b.drv.count = LED_MAX_NUM;
+        return (&ws2812b);
 }

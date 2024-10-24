@@ -1,6 +1,6 @@
 #include "led_drv_pwm.h"
 
-static struct LED_DRV_PWM led_drv_pwm;
+static struct LED_DRV_PWM pwm;
 
 static void mcu_pwm_init(void)
 {
@@ -44,12 +44,12 @@ static int toggle_(void *self, enum LED_ID id)
 
 struct LED_DRV_PWM *led_drv_pwm_create(void)
 {
-        led_drv_pwm.drv.init = init_;
-        led_drv_pwm.drv.turn_on = turn_on_;
-        led_drv_pwm.drv.turn_off = turn_off_;
-        led_drv_pwm.drv.toggle = toggle_;
-        led_drv_pwm.drv.set_brightness = set_brightness_;
-        led_drv_pwm.drv.set_color = 0;
-        led_drv_pwm.drv.led_count = LED_MAX_NUM;
-        return (&led_drv_pwm);
+        pwm.drv.init = init_;
+        pwm.drv.turn_on = turn_on_;
+        pwm.drv.turn_off = turn_off_;
+        pwm.drv.toggle = toggle_;
+        pwm.drv.set_brightness = set_brightness_;
+        pwm.drv.set_color = 0;
+        pwm.drv.count = LED_MAX_NUM;
+        return (&pwm);
 }
