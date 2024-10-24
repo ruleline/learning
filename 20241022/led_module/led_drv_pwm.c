@@ -1,7 +1,5 @@
 #include "led_drv_pwm.h"
 
-#include <stddef.h>
-
 static struct LED_DRV_PWM led_drv_pwm;
 
 static void mcu_pwm_init(void)
@@ -51,7 +49,7 @@ struct LED_DRV_PWM *led_drv_pwm_create(void)
         led_drv_pwm.drv.turn_off = turn_off_;
         led_drv_pwm.drv.toggle = toggle_;
         led_drv_pwm.drv.set_brightness = set_brightness_;
-        led_drv_pwm.drv.set_color = NULL;
+        led_drv_pwm.drv.set_color = 0;
         led_drv_pwm.drv.led_count = LED_MAX_NUM;
         return (&led_drv_pwm);
 }

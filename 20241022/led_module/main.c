@@ -1,7 +1,5 @@
 #include "led_module.h"
 
-#include <stddef.h>
-
 static struct LED_MODULE *led_module;
 
 int main(void)

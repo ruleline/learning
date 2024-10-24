@@ -53,7 +53,6 @@ static ws2812b_set_one_rgb(unsigned char *data, unsigned char brightness)
 //把RGB和亮度数据，发送到ws2812b的数据线上
 static void ws2812b_set_data(struct LED_DRV_WS2812B *ws2812b)
 {
-        unsigned int i = 0, j = 0, k = 0;
         unsigned char color_buff[3];
         unsigned char brightness = 0;
         unsigned int led_count = ws2812b->drv.led_count;    //灯珠总数
@@ -63,7 +62,7 @@ static void ws2812b_set_data(struct LED_DRV_WS2812B *ws2812b)
         __disable_irq();
         ws2812b_reset();
 
-        for (i = 0;i < LED_MAX_NUM; i++) {
+        for (unsigned int i = 0; i < LED_MAX_NUM; i++) {
                 color_buff[0] = ws2812b->rgbcw_value[i].green;
                 color_buff[1] = ws2812b->rgbcw_value[i].red;
                 color_buff[2] = ws2812b->rgbcw_value[i].blue;
@@ -110,7 +109,7 @@ static int turn_on_(void *self, enum LED_ID id)
 
 static int turn_off_(void *self, enum LED_ID id)
 {
-        if (id >= LED_MAX_NUM)return -1;
+        if (id >= LED_MAX_NUM) return -1;
 
         struct LED_DRV_WS2812B *ws2812b = (struct LED_DRV_WS2812B *)self;
 
@@ -123,7 +122,7 @@ static int turn_off_(void *self, enum LED_ID id)
 
 static int set_brightness_(void *self, enum LED_ID id, unsigned char brightness)
 {
-        if (id >= LED_MAX_NUM)return -1;
+        if (id >= LED_MAX_NUM) return -1;
 
         struct LED_DRV_WS2812B *ws2812b = (struct LED_DRV_WS2812B *)self;
 
@@ -136,7 +135,7 @@ static int set_brightness_(void *self, enum LED_ID id, unsigned char brightness)
 
 static int set_color_(void *self, enum LED_ID id, struct RGBCW *color)
 {
-        if (id >= LED_MAX_NUM)return -1;
+        if (id >= LED_MAX_NUM) return -1;
 
         struct LED_DRV_WS2812B *ws2812b = (struct LED_DRV_WS2812B *)self;
 

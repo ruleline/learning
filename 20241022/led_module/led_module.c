@@ -1,21 +1,19 @@
 #include "led_module.h"
 
-#include <stddef.h>
 #include <string.h>
 
 static struct LED_MODULE led_module = {
         .led_count = 0,
-        .led_drv = NULL,
+        .led_drv = 0,
 };
 
 static int init_(struct LED_MODULE *self)
 {
         if (!self) return -1;
 
-        if (NULL != led_module.led_drv) {
+        if (led_module.led_drv) {
                 led_module.led_drv->init(led_module.led_drv);
         }
-
         return 0;
 }
 
@@ -25,7 +23,6 @@ static int start_(struct LED_MODULE *self)
         if (!self) return -1;
 
         //在这里添加某些启动条件，也可以不添加
-
         return 0;
 }
 
@@ -47,7 +44,6 @@ static int handler_(struct LED_MODULE *self)
         self->led_drv->toggle(self->led_drv, LED_ID_2);
         self->led_drv->toggle(self->led_drv, LED_ID_3);
         self->led_drv->toggle(self->led_drv, LED_ID_4);
-
         return 0;
 }
 
@@ -57,7 +53,6 @@ static int get_led_count_(struct LED_MODULE *self)
         if (!self) return -1;
 
         self->led_count = self->led_drv->led_count;
-
         return self->led_count;
 }
 
@@ -70,7 +65,7 @@ static int get_led_count_(struct LED_MODULE *self)
  */
 struct LED_MODULE *led_module_create(struct LED_MODULE *self, struct LED_MODULE_CFG *cfg)
 {
-        if (!cfg)return NULL;
+        if (!cfg) return 0;
 
         led_module.init = init_;
         led_module.start = start_;
@@ -85,8 +80,7 @@ struct LED_MODULE *led_module_create(struct LED_MODULE *self, struct LED_MODULE_
         } else if(strcmp("WS2812B", cfg->drv_name) == 0) {
                 led_module.led_drv = (struct LED_DRIVER*)led_drv_ws2812b_create();
         } else {
-                led_module.led_drv = NULL;
+                led_module.led_drv = 0;
         }
-
         return (&led_module);
 }

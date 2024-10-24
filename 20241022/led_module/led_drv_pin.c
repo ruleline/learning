@@ -1,7 +1,5 @@
 #include "led_drv_pin.h"
 
-#include <stddef.h>
-
 static struct LED_DRV_PIN led_drv_pin;
 
 static void mcu_gpio_init(void)
@@ -80,8 +78,8 @@ struct LED_DRV_PIN *led_drv_pin_create(void)
         led_drv_pin.drv.turn_on = turn_on_;
         led_drv_pin.drv.turn_off = turn_off_;
         led_drv_pin.drv.toggle = toggle_;
-        led_drv_pin.drv.set_brightness = NULL;
-        led_drv_pin.drv.set_color = NULL;
+        led_drv_pin.drv.set_brightness = 0;
+        led_drv_pin.drv.set_color = 0;
         led_drv_pin.drv.led_count = LED_MAX_NUM;
         return &led_drv_pin;
 }
