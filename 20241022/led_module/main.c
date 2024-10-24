@@ -1,6 +1,6 @@
 #include "led_module.h"
 
-static struct LED_MODULE *led_module;
+static struct LED_MODULE *led;
 
 int main(void)
 {
@@ -8,11 +8,11 @@ int main(void)
                 .drv_name = "PWM",
         };
 
-        led_module = led_module_create(led_module, &cfg);
+        led = led_module_create(led, &cfg);
 
-        if (!led_module) {
-                if (led_module->init(led_module) == 0) {
-                        led_module->start(led_module);
+        if (!led) {
+                if (led->init(led) == 0) {
+                        led->start(led);
                 } else {
                         goto exit;
                 }
@@ -21,7 +21,7 @@ int main(void)
         }
 
         while (1) {
-                led_module->handler(led_module);
+                led->handler(led);
                 delay_ms(1);
         }
 
