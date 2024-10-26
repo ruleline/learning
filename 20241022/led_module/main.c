@@ -10,21 +10,13 @@ int main(void)
 
         led = led_module_create(led, &cfg);
 
-        if (!led) {
-                if (led->init(led) == 0) {
-                        led->start(led);
-                } else {
-                        goto exit;
+        if (!led && (led->init(led) == 0)) {
+                led->start(led);
+                while (1) {
+                        led->handler(led);
+                        delay_ms(1);
                 }
-        } else {
-                goto exit;
         }
 
-        while (1) {
-                led->handler(led);
-                delay_ms(1);
-        }
-
-        exit :
-                return 0;
+        return 0;
 }
