@@ -38,10 +38,10 @@ struct FSM;
  *
  */
 struct OPS_HANDLER {
-        void (*a)(struct FSM *self);
-        void (*b)(struct FSM *self);
-        void (*c)(struct FSM *self);
-        void (*d)(struct FSM *self);
+        int (*a)(struct FSM *self); /**< a操作 */
+        int (*b)(struct FSM *self); /**< b操作 */
+        int (*c)(struct FSM *self); /**< c操作 */
+        int (*d)(struct FSM *self); /**< d操作 */
 };
 
 /**
@@ -49,9 +49,9 @@ struct OPS_HANDLER {
  *
  */
 struct OPS_INTERNAL {
-        int (*init)(struct FSM *self);
-        int (*deinit)(struct FSM *self);
-        int (*run)(struct FSM *self);
+        int (*init)(struct FSM *self);          /**< 初始化操作 */
+        int (*deinit)(struct FSM *self);        /**< 反初始化操作 */
+        int (*run)(struct FSM *self);           /**< 运行操作 */
 };
 
 /**
@@ -67,9 +67,9 @@ struct OPS_EXTERNAL {
  *
  */
 struct OPS {
-        const struct OPS_HANDLER *handler;
-        const struct OPS_INTERNAL *internal;
-        const struct OPS_EXTERNAL *external;
+        const struct OPS_HANDLER *handler;      /**< 操作 */
+        const struct OPS_INTERNAL *internal;    /**< 内部操作 */
+        const struct OPS_EXTERNAL *external;    /**< 外部操作 */
 };
 
 /**
@@ -82,10 +82,10 @@ struct FSM {
         const struct OPS *ops;  /**< 操作 */
 };
 
-static inline void handler_a_(struct FSM *self);
-static inline void handler_b_(struct FSM *self);
-static inline void handler_c_(struct FSM *self);
-static inline void handler_d_(struct FSM *self);
+static inline int handler_a_(struct FSM *self);
+static inline int handler_b_(struct FSM *self);
+static inline int handler_c_(struct FSM *self);
+static inline int handler_d_(struct FSM *self);
 
 static inline int init_(struct FSM *self);
 static inline int deinit_(struct FSM *self);
@@ -140,7 +140,7 @@ static struct FSM fsm = {
         .ops = &ops,
 };
 
-static const void (*handlers[STATE_MAX])(struct FSM *self) = {
+static const int (*handlers[STATE_MAX])(struct FSM *self) = {
         &handler_a_,
         &handler_b_,
         &handler_c_,
@@ -152,10 +152,11 @@ static const void (*handlers[STATE_MAX])(struct FSM *self) = {
  *
  * @param self fsm对象
  */
-static inline void handler_a_(struct FSM *self)
+static inline int handler_a_(struct FSM *self)
 {
         /* do something */
         self->state = STATE_B;
+        return 0;
 }
 
 /**
@@ -163,10 +164,11 @@ static inline void handler_a_(struct FSM *self)
  *
  * @param self fsm对象
  */
-static inline void handler_b_(struct FSM *self)
+static inline int handler_b_(struct FSM *self)
 {
         /* do something */
         self->state = STATE_C;
+        return 0;
 }
 
 /**
@@ -174,10 +176,11 @@ static inline void handler_b_(struct FSM *self)
  *
  * @param self fsm对象
  */
-static inline void handler_c_(struct FSM *self)
+static inline int handler_c_(struct FSM *self)
 {
         /* do something */
         self->state = STATE_B;
+        return 0;
 }
 
 /**
@@ -185,14 +188,15 @@ static inline void handler_c_(struct FSM *self)
  *
  * @param self fsm对象
  */
-static inline void handler_d_(struct FSM *self)
+static inline int handler_d_(struct FSM *self)
 {
         /* do something */
         self->state = STATE_A;
+        return 0;
 }
 
 /**
- * @brief 初始化
+ * @brief 初始化操作
  *
  * @param self fsm对象
  * @return 0
@@ -205,7 +209,7 @@ static inline int init_(struct FSM *self)
 }
 
 /**
- * @brief 反初始化
+ * @brief 反初始化操作
  *
  * @param self fsm对象
  * @return 0
