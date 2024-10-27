@@ -204,7 +204,7 @@ static inline int deinit_(struct FSM *self)
  *
  * @param self fsm对象
  * @return 结果
- * @retval 0 成功 
+ * @retval 0 成功
  * @retval -1 参数非法
  */
 static inline int run_(struct FSM *self)
