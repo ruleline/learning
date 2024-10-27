@@ -225,7 +225,9 @@ static inline int deinit_(struct FSM *self)
 static inline int run_(struct FSM *self)
 {
         if (self->state >= STATE_MAX) return -1;
+
         handlers[self->state](self);
+        return 0;
 }
 
 /**
