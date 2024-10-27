@@ -25,10 +25,10 @@
  *
  */
 enum STATE {
-        STATE_A = 0, /**< 状态A */
-        STATE_B = 1, /**< 状态B */
-        STATE_C = 2, /**< 状态C */
-        STATE_D = 3, /**< 状态D */
+        STATE_A = 0, /**< 状态a */
+        STATE_B = 1, /**< 状态b */
+        STATE_C = 2, /**< 状态c */
+        STATE_D = 3, /**< 状态d */
         STATE_MAX,
 };
 
