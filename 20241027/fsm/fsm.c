@@ -57,7 +57,7 @@ struct OPS_EXTERNAL {
  *
  */
 struct OPS_HANDLER {
-        const int (*handlers[STATE_MAX])(struct FSM *self);
+        const int (*table[STATE_MAX])(struct FSM *self);
 };
 
 /**
@@ -75,9 +75,10 @@ struct OPS {
  *
  */
 struct FSM {
-        enum STATE state;       /**< 状态 */
+        enum STATE state;                       /**< 状态 */
+        const unsigned char state_number;       /**< 状态数量 */
 
-        const struct OPS *ops;  /**< 操作 */
+        const struct OPS *ops;                  /**< 操作 */
 };
 
 static inline int init_(struct FSM *self);
@@ -112,7 +113,7 @@ static const struct OPS_EXTERNAL external = {
  *
  */
 static const struct OPS_HANDLER handler = {
-        .handlers = {
+        .table = {
                 [STATE_A] = handler_a_,
                 [STATE_B] = handler_b_,
                 [STATE_C] = handler_c_,
@@ -136,6 +137,7 @@ static const struct OPS ops = {
  */
 static struct FSM fsm = {
         .state = STATE_MAX,
+        .state_number = STATE_MAX,
 
         .ops = &ops,
 };
@@ -206,11 +208,9 @@ static inline int deinit_(struct FSM *self)
  */
 static inline int run_(struct FSM *self)
 {
-        if (self->state >= STATE_MAX)
-        {
-                return -1;
-        };
-        self->ops->handler->handlers[self->state](self);
+        if (self->state >= self->state_number) return -1;
+
+        self->ops->handler->table[self->state](self);
         return 0;
 }
 
