@@ -57,10 +57,7 @@ struct OPS_EXTERNAL {
  *
  */
 struct OPS_HANDLER {
-        int (*a)(struct FSM *self); /**< a操作 */
-        int (*b)(struct FSM *self); /**< b操作 */
-        int (*c)(struct FSM *self); /**< c操作 */
-        int (*d)(struct FSM *self); /**< d操作 */
+        const int (*handlers[STATE_MAX])(struct FSM *self);
 };
 
 /**
@@ -115,10 +112,12 @@ static const struct OPS_EXTERNAL external = {
  *
  */
 static const struct OPS_HANDLER handler = {
-        .a = handler_a_,
-        .b = handler_b_,
-        .c = handler_c_,
-        .d = handler_d_,
+        .handlers = {
+                [STATE_A] = handler_a_,
+                [STATE_B] = handler_b_,
+                [STATE_C] = handler_c_,
+                [STATE_D] = handler_d_,
+        },
 };
 
 /**
@@ -139,13 +138,6 @@ static struct FSM fsm = {
         .state = STATE_MAX,
 
         .ops = &ops,
-};
-
-static const int (*handlers[STATE_MAX])(struct FSM *self) = {
-        handler_a_,
-        handler_b_,
-        handler_c_,
-        handler_d_,
 };
 
 /**
@@ -214,9 +206,11 @@ static inline int deinit_(struct FSM *self)
  */
 static inline int run_(struct FSM *self)
 {
-        if (self->state >= STATE_MAX) return -1;
-
-        handlers[self->state](self);
+        if (self->state >= STATE_MAX)
+        {
+                return -1;
+        };
+        self->ops->handler->handlers[self->state](self);
         return 0;
 }
 
