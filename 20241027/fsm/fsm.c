@@ -115,10 +115,10 @@ static const struct OPS_EXTERNAL external = {
  *
  */
 static const struct OPS_HANDLER handler = {
-        .a = handler_a_,
-        .b = handler_b_,
-        .c = handler_c_,
-        .d = handler_d_,
+        .a = &handler_a_,
+        .b = &handler_b_,
+        .c = &handler_c_,
+        .d = &handler_d_,
 };
 
 /**
