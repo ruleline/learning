@@ -114,10 +114,10 @@ static const struct OPS_EXTERNAL external = {
  */
 static const struct OPS_HANDLER handler = {
         .table = {
-                [STATE_A] = handler_a_,
-                [STATE_B] = handler_b_,
-                [STATE_C] = handler_c_,
-                [STATE_D] = handler_d_,
+                handler_a_,
+                handler_b_,
+                handler_c_,
+                handler_d_,
         },
 };
 
@@ -204,7 +204,8 @@ static inline int deinit_(struct FSM *self)
  *
  * @param self fsm对象
  * @return 结果
- * @retval 0 成功
+ * @retval 0 成功 
+ * @retval -1 参数非法
  */
 static inline int run_(struct FSM *self)
 {
