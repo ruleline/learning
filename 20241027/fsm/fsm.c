@@ -148,6 +148,36 @@ static const int (*handlers[STATE_MAX])(struct FSM *self) = {
 };
 
 /**
+ * @brief fsm初始化
+ *
+ */
+void fsm_init(void)
+{
+        struct FSM *self = &fsm;
+        self->ops->internal->init(self);
+}
+
+/**
+ * @brief fsm反初始化
+ *
+ */
+void fsm_deinit(void)
+{
+        struct FSM *self = &fsm;
+        self->ops->internal->deinit(self);
+}
+
+/**
+ * @brief fsm运行
+ *
+ */
+void fsm_run(void)
+{
+        struct FSM *self = &fsm;
+        self->ops->internal->run(self);
+}
+
+/**
  * @brief a操作
  *
  * @param self fsm对象
@@ -232,34 +262,4 @@ static inline int run_(struct FSM *self)
 
         handlers[self->state](self);
         return 0;
-}
-
-/**
- * @brief fsm初始化
- *
- */
-void fsm_init(void)
-{
-        struct FSM *self = &fsm;
-        self->ops->internal->init(self);
-}
-
-/**
- * @brief fsm反初始化
- *
- */
-void fsm_deinit(void)
-{
-        struct FSM *self = &fsm;
-        self->ops->internal->deinit(self);
-}
-
-/**
- * @brief fsm运行
- *
- */
-void fsm_run(void)
-{
-        struct FSM *self = &fsm;
-        self->ops->internal->run(self);
 }
