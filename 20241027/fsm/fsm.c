@@ -199,7 +199,6 @@ static inline void handler_d_(struct FSM *self)
  */
 static inline int init_(struct FSM *self)
 {
-        // 安全检查
         // 初始化逻辑
         self->state = STATE_A;
         return 0;
@@ -213,7 +212,6 @@ static inline int init_(struct FSM *self)
  */
 static inline int deinit_(struct FSM *self)
 {
-        // 安全检查
         // 反初始化逻辑
         return 0;
 }
@@ -226,7 +224,7 @@ static inline int deinit_(struct FSM *self)
  */
 static inline int run_(struct FSM *self)
 {
-        // 安全检查
+        if (self->state >= STATE_MAX) return -1;
         handlers[self->state](self);
 }
 
