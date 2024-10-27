@@ -4,6 +4,7 @@ static struct LED_MODULE *led;
 
 int main(void)
 {
+        
         struct LED_MODULE_CFG cfg = {
                 .drv_name = "PWM",
         };
