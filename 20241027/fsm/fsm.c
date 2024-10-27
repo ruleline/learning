@@ -115,10 +115,10 @@ static const struct OPS_EXTERNAL external = {
  *
  */
 static const struct OPS_HANDLER handler = {
-        .a = &handler_a_,
-        .b = &handler_b_,
-        .c = &handler_c_,
-        .d = &handler_d_,
+        .a = handler_a_,
+        .b = handler_b_,
+        .c = handler_c_,
+        .d = handler_d_,
 };
 
 /**
@@ -142,10 +142,10 @@ static struct FSM fsm = {
 };
 
 static const int (*handlers[STATE_MAX])(struct FSM *self) = {
-        &handler_a_,
-        &handler_b_,
-        &handler_c_,
-        &handler_d_,
+        handler_a_,
+        handler_b_,
+        handler_c_,
+        handler_d_,
 };
 
 /**
